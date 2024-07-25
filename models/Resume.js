@@ -8,4 +8,4 @@ const resumeSchema = new mongoose.Schema({
   education: [Education],
 });
 
-module.exports = mongoose.model("Resume", resumeSchema);
+module.exports = resumeSchema;

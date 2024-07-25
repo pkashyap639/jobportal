@@ -6,4 +6,4 @@ const experienceSchema = new mongoose.Schema({
   duration: { type: String, required: true },
 });
 
-module.exports = mongoose.model("Experience", experienceSchema);
+module.exports = experienceSchema;
