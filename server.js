@@ -30,7 +30,13 @@ mongoose
     console.error("Error connecting to MongoDB", err);
   });
 
+app.get("/", test.allusers);
+
 const db = mongoose.connection;
 db.once("open", function () {
   console.log("We are connected");
+});
+
+app.listen(3000, () => {
+  console.log("Server Running Fine");
 });
