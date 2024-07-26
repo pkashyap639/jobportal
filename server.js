@@ -31,6 +31,7 @@ mongoose
   });
 
 app.get("/", test.allusers);
+app.post("/signup", test.signup);
 
 const db = mongoose.connection;
 db.once("open", function () {
