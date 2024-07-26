@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-const test = require("./controller/test");
+const job = require("./controller/Job");
 var path = require("path");
 var bodyParser = require("body-parser");
 const User = require("./models/User");
@@ -30,8 +30,9 @@ mongoose
     console.error("Error connecting to MongoDB", err);
   });
 
-app.get("/", test.allusers);
-app.post("/signup", test.signup);
+app.get("/", job.allusers);
+app.post("/signup", job.signup);
+app.post("/signin", job.signin);
 
 const db = mongoose.connection;
 db.once("open", function () {
