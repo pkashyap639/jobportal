@@ -28,3 +28,28 @@ async function run() {
 run().catch(console.dir);
 
 // mongodb+srv://pkashyap148:<password>@jobportal.icauweq.mongodb.net/
+
+"resume": {
+    "resume_id": ObjectId("60d5ec49f56e500a3c8e4f04"),
+    "file_url": "http://example.com/resume/jobseeker1.pdf",
+    "skills": ["JavaScript", "Node.js", "MongoDB"],
+    "experience": [
+      {
+        "company": "TechCorp",
+        "position": "Software Developer",
+        "duration": "2 years"
+      },
+      {
+        "company": "WebSolutions",
+        "position": "Frontend Developer",
+        "duration": "1.5 years"
+      }
+    ],
+    "education": [
+      {
+        "institution": "University of Example",
+        "degree": "Bachelor of Science in Computer Science",
+        "year": 2020
+      }
+    ]
+  }
