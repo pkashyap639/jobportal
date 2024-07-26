@@ -6,4 +6,4 @@ const educationSchema = new mongoose.Schema({
   year: { type: Number, required: true },
 });
 
-module.exports = mongoose.model("Education", educationSchema);
+module.exports = educationSchema;
