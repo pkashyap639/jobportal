@@ -2,11 +2,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const job = require("./controller/Job");
+const jobPosting = require("./controller/JobPosting");
+const application = require("./controller/Application");
 var path = require("path");
 var bodyParser = require("body-parser");
 const User = require("./models/User");
-const uri =
-  "mongodb+srv://pkashyap148:jobpassword@jobportal.icauweq.mongodb.net/users?retryWrites=true&w=majority&appName=jobportal";
+// const uri =
+//   "mongodb+srv://pkashyap148:jobpassword@jobportal.icauweq.mongodb.net/users?retryWrites=true&w=majority&appName=jobportal";
+
+//Paulo's connection string -> as I've applied some changes the strutucutre, please use this database
+const uri = "mongodb+srv://lambton:3AXw2JI4C2qklMtW@jobapp.nzkszzx.mongodb.net/job_app";
+
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,6 +39,19 @@ mongoose
 app.get("/", job.allusers);
 app.post("/signup", job.signup);
 app.post("/signin", job.signin);
+
+//JobList
+app.get("/joblist", jobPosting.getAllJobs);
+app.get("/jobById", jobPosting.getJobById);
+app.post("/postjob", jobPosting.addJob);
+app.delete("/deleteJob", jobPosting.removeJob);
+app.put("/updateJob", jobPosting.updateJob);
+
+//JobApplication
+app.get("/job/applicants", application.getApplicationsByJob);
+app.get("/appliedJobs/", application.getApplicationByUser);
+app.post("/apply", application.apply);
+app.put("/application/updatestatus", application.changeStatus);
 
 const db = mongoose.connection;
 db.once("open", function () {
