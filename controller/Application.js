@@ -1,4 +1,6 @@
 const Application = require("../models/Application");
+const JobListing = require("../models/JobListing");
+const User = require("../models/User")
 const mongoose = require("mongoose");
 
 module.exports = {
@@ -7,12 +9,19 @@ module.exports = {
         /*
         Mock Data
         {
-            "jobId": "1",
-            "userId": "1",
+            "jobId": "60c72b2f5f1b2c001c8e4c2b",
+            "userId": "60c72b2f5f1b2c001c8e4c2b"
         }
         */
         try{
             const application = new Application(req.body);
+
+            //check if jobList and user exists
+            const jobListingExists = await JobListing.exists({_id: req.body.jobId});
+            const userExists = await User.exists({_id: req.body.userId});
+            if(!jobListingExists || !userExists){
+                return res.status(400).send({error: "Not valid input"});
+            }
             await Application.create(application);
             res.status(201).send(application);
         } catch (err){
@@ -21,10 +30,21 @@ module.exports = {
     },
 
     getApplicationByUser: async function (req, res){
+        //shows all applications and jobdetails where the user applied
         console.log("--Accessing get Application by User Id");
         try{
-            const userIdFromReq = req.query.user; //from URL http://localhost:3000/appliedJobs?user=1
-            const result = await Application.find({userId: userIdFromReq});
+            //from URL http://localhost:3000/appliedJobs?user=<userId>
+            //And cast into object ID
+            const userId = mongoose.Types.ObjectId.createFromHexString(req.query.user); 
+            const result = await Application.aggregate([
+                {$match: {userId}},
+                {$lookup: {
+                    from: "joblistings",
+                    localField: "jobId",
+                    foreignField: "_id",
+                    as: "jobdetails"
+                }}
+            ]);
             res.status(201).send(result);
         } catch (err){
             res.status(500).send({error: err.message});
@@ -32,11 +52,21 @@ module.exports = {
     },
 
     getApplicationsByJob: async function (req, res){
+        //shows all applications for a joblisted
         console.log("--Accessing get Application by Job Id");
         try{
-            const jobIdFromReq = req.query.jobId; //from URL http://localhost:3000/job/applicants?jobId=1
-            const result = await Application.find({jobId: jobIdFromReq});
-            console.log(result);
+            //from URL http://localhost:3000/job/applicants?jobId=<jobId>
+            //And cast into object ID
+            const jobId = mongoose.Types.ObjectId.createFromHexString(req.query.jobId); 
+            const result = await Application.aggregate([
+                {$match: {jobId}},
+                {$lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "result"
+                }}
+            ]);
             res.status(201).send(result);
         } catch (err){
             res.status(500).send({error: err.message});
@@ -48,7 +78,7 @@ module.exports = {
         /*
         Mock Data
         {
-            "applicationId": "1",
+            "applicationId": "60c72b2f5f1b2c001c8e4c2b",
             "status": "cancelled"
         }
         */
