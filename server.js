@@ -7,8 +7,11 @@ const application = require("./controller/Application");
 var path = require("path");
 var bodyParser = require("body-parser");
 const User = require("./models/User");
-const uri =
-  "mongodb+srv://pkashyap148:jobpassword@jobportal.icauweq.mongodb.net/users?retryWrites=true&w=majority&appName=jobportal";
+// const uri =
+//   "mongodb+srv://pkashyap148:jobpassword@jobportal.icauweq.mongodb.net/users?retryWrites=true&w=majority&appName=jobportal";
+
+//Paulo's connection string -> as I've applied some changes the strutucutre, please use this database
+const uri = "mongodb+srv://lambton:3AXw2JI4C2qklMtW@jobapp.nzkszzx.mongodb.net/job_app";
 
 var app = express();
 
