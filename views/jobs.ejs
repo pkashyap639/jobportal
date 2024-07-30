@@ -1,0 +1,59 @@
+<!-- title for page title and activeClass for activated navigation button.
+Possible activeClass values: Home, All-Jobs, About -->
+
+<%- include('partials/header', { title: 'Jobs', activeClass: 'All-Jobs' }) %>
+
+    <!-- HOME -->
+  <section class="section-hero home-section overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+
+      <%- include('partials/job-search', {all_locations: all_locations}) %>
+
+      <a href="#next" class="scroll-button smoothscroll">
+        <span class=" icon-keyboard_arrow_down"></span>
+      </a>
+    </section>
+
+    
+    <section class="site-section" id="next">
+      <div class="container">
+
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-7 text-center">
+            <h2 class="section-title mb-2"><%= alljobs.length %> Job Listed</h2>
+          </div>
+        </div>
+        
+        <ul class="job-listings mb-5">
+          <!-- looping through all jobs -->
+          <% for(var i =0;i<alljobs.length; i++) { %>
+            <%- include('partials/single-job-list', {job: alljobs[i]}) %>
+          <% } %>
+        </ul>
+
+        <!-- pagination to be added later if possible -->
+        <!-- <div class="row pagination-wrap">
+          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
+            <span>Showing 1-7 Of 43,167 Jobs</span>
+          </div>
+          <div class="col-md-6 text-center text-md-right">
+            <div class="custom-pagination ml-auto">
+              <a href="#" class="prev">Prev</a>
+              <div class="d-inline-block">
+              <a href="#" class="active">1</a>
+              <a href="#">2</a>
+              <a href="#">3</a>
+              <a href="#">4</a>
+              </div>
+              <a href="#" class="next">Next</a>
+            </div>
+          </div>
+        </div> -->
+
+      </div>
+    </section>
+
+    <%- include('partials/signup-section') %>
+
+    
+    
+    <%- include('partials/footer') %>

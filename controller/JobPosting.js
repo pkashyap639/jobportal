@@ -1,5 +1,6 @@
 const JobListing = require("../models/JobListing");
 const mongoose = require("mongoose");
+const User = require("../models/User");
 
 module.exports = {
     addJob: async function (req, res){
@@ -28,11 +29,14 @@ module.exports = {
         console.log("--Accessing getAllJobs");
         try{
             let jobList = await JobListing.find();
-            res.status(200).send(jobList);
+            let all_locations = await JobListing.distinct('location'); //getting all the locations
+            res.render('jobs.ejs', {alljobs:jobList, all_locations: all_locations})
+            // res.status(200).send({alljobs:jobList});
         } catch (err){
             res.status(500).send({error: err.message});
         }
     },
+
 
     getJobById: async function (req, res){
         console.log("--Accessing getJobById");
@@ -42,7 +46,8 @@ module.exports = {
             if (!job) {
                 return res.status(404).send({ error: "Job not found" });
             }
-            res.status(200).send(job);
+            res.render('job.ejs', {job:job})
+            // res.status(200).send(job);
         } catch (err){
             res.status(500).send({error: err.message});
         }
