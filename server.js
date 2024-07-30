@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const multer = require('multer'); //multer for using in file uploading
 
 const job = require("./controller/Job");
 const jobPosting = require("./controller/JobPosting");
@@ -20,6 +21,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.set("views", path.join(__dirname, "views"));
+
+// Multer setup
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
+
+// Serve uploaded files
+app.use('/uploads', express.static('uploads'));
 
 // Function to convert datetime to "x hours ago"
 function timeAgo(date) {
@@ -86,11 +101,11 @@ app.get("/jobById", jobPosting.getJobById);
 
 app.post("/signup", job.signup);
 app.post("/signin", job.signin);
-
+app.post("/postjob", upload.single('company_logo'), jobPosting.addJob);
 //JobList
 // app.get("/joblist", jobPosting.getAllJobs);
 
-app.post("/postjob", jobPosting.addJob);
+
 app.delete("/deleteJob", jobPosting.removeJob);
 app.put("/updateJob", jobPosting.updateJob);
 

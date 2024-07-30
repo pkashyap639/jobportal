@@ -1,7 +1,8 @@
 <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
     <a href="/jobById?id=<%= job.id %>"></a>
     <div class="job-listing-logo">
-      <img src="images/job_logo_1.jpg" alt="Free Website Template by Free-Template.co" class="img-fluid">
+      <img src="/<%= job.company_logo %>" alt="<%= job.company_name %> Logo" class="img-fluid">
+      <!-- <img  style="max-width: 200px;"> -->
     </div>
     <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
       <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">

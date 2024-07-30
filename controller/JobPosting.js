@@ -3,27 +3,42 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 
 module.exports = {
-    addJob: async function (req, res){
-        console.log("--Accessing addJob");
-        /*
-        Mock data
-        {
-            "employerId": {"_id":"1"},
-            "title": "CO-OP Java Developer",
-            "description": "A description of the job",
-            "location": "Toronto",
-            "salary": 60000
+    // addJob: async function (req, res){
+    //     console.log("--Accessing addJob");
+        
+    //     try{
+    //         const job = new JobListing(req.body);
+    //         await JobListing.create(job);
+    //         res.status(201).send(job);
+    //     } catch (err){
+    //         res.status(500).send({error: err.message});
+    //     }
+    // },
+    addJob: async function (req, res) {
+        try {
+          const { title, email, job_type, description, location, salary, company_name, company_website } = req.body;
+          const company_logo = req.file ? req.file.path : '';
+    
+          const job = new JobListing({
+            title,
+            email,
+            job_type,
+            description,
+            location,
+            salary,
+            company_name,
+            company_website,
+            company_logo
+          });
+    
+          await job.save();
+        //   res.status(201).send(job);
+          res.redirect('/all-jobs'); // Redirect to /all-jobs on successful job addition
+        } catch (err) {
+            //need to show the error on the form page
+          res.status(500).send({ error: err.message });
         }
-        */
-        try{
-            const job = new JobListing(req.body);
-            await JobListing.create(job);
-            res.status(201).send(job);
-        } catch (err){
-            res.status(500).send({error: err.message});
-        }
-    },
-
+      },
 
     getAllJobs: async function (req, res){
         console.log("--Accessing getAllJobs");

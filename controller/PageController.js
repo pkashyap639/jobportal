@@ -34,7 +34,7 @@ module.exports = {
         res.render("about.ejs");
     },
     postNewJob: function(req, res){
-        res.render("jobform.ejs");
+        res.render("job-form.ejs");
     },
 
     
