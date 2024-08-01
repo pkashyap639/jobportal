@@ -104,6 +104,7 @@ app.post("/signin", job.signin);
 app.post("/postjob", upload.single('company_logo'), jobPosting.addJob);
 //JobList
 // app.get("/joblist", jobPosting.getAllJobs);
+app.get("/searchJob", jobPosting.getJobsByCriteria);
 
 
 app.delete("/deleteJob", jobPosting.removeJob);
