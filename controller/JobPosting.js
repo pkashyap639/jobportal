@@ -106,5 +106,50 @@ module.exports = {
         }catch (err){
             res.status(500).send({error: err.message});
         }
-    }
+    },
+
+    getJobsByCriteria: async function (req, res){
+        console.log("--Accessing getJobsByCriteria");
+        try{
+            const content = req.query.content;
+            const location = req.query.location;
+            const jobType = req.query.jobType;
+
+            let query;
+
+            //if content is set, apply filtered query that search for the content term in Title and description
+            if(content && content.trim() != ""){ 
+                query = JobListing.find(
+                    {$or:[
+                        {title: {$regex:content, $options: 'i'}},
+                        {description:{$regex:content, $options: 'i'}},
+                        {company_name:{$regex:content, $options: 'i'}}
+                    ]}
+                )
+            }
+            //if cannot content is not set, retrieve all data;
+            else{
+                query = JobListing.find();
+            }
+
+            //conditions for the following criteria
+
+            if(jobType && jobType.trim() != ""){
+                query = query.where("job_type").equals(jobType);
+            } 
+
+            if(location  && location.trim() != ""){
+                query = query.where("location").equals(location);
+            }
+
+            const results = await query;
+
+            console.log(results);
+
+            res.status(201).send(results);
+
+          } catch (err){
+            res.status(500).send({error: err.message});
+        }
+    },
 }
