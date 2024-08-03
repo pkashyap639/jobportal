@@ -1,0 +1,124 @@
+<!-- title for page title and activeClass for activated navigation button.
+Possible activeClass values: Home, All-Jobs, About -->
+
+<%- include('partials/header', { title: 'Jobs', activeClass: 'All-Jobs' }) %>
+
+    <!-- HOME -->
+  <section class="section-hero home-section overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+
+      <%- include('partials/job-search', {all_locations: all_locations}) %>
+
+      <a href="#next" class="scroll-button smoothscroll">
+        <span class=" icon-keyboard_arrow_down"></span>
+      </a>
+    </section>
+
+    
+    <section class="site-section" id="next">
+      <div class="container">
+        <% if(alljobs.length==0){%>
+            <div class="row mb-5 justify-content-center">
+                <div class="col-md-7 text-center">
+                  <h2 class="section-title mb-2">No job applied yet!</h2>
+                </div>
+              </div>
+
+              <% } else {%>
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-7 text-center">
+            <h2 class="section-title mb-2"><%= alljobs.length %> Job Listed</h2>
+          </div>
+        </div>
+        
+        <ul class="job-listings mb-5">
+          <!-- looping through all jobs -->
+          <% for(var i =0;i<alljobs.length; i++) { %>
+            <div class="row justify-content-center">
+            <div class="col-10">
+                <%- include('partials/single-job-list', {job: alljobs[i]}) %>
+            </div>
+            <div class="col-2 aligin-items-center">
+                <form style="display: inline;" id="removeApplicationForm">
+                    <input hidden type="text" id="JobId" name="JobId" value="<%= alljobs[i]._id %>">
+            
+                    <input hidden type="text" id="UserId" name="UserId" value="<%= user_object.id %>">
+            
+                    <button type="submit" class="btn btn-danger">Withdraw Application</button>
+                </form>
+            </div>
+        </div>
+          <% } %>
+        </ul>
+            <% }%>
+
+        <!-- pagination to be added later if possible -->
+        <!-- <div class="row pagination-wrap">
+          <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
+            <span>Showing 1-7 Of 43,167 Jobs</span>
+          </div>
+          <div class="col-md-6 text-center text-md-right">
+            <div class="custom-pagination ml-auto">
+              <a href="#" class="prev">Prev</a>
+              <div class="d-inline-block">
+              <a href="#" class="active">1</a>
+              <a href="#">2</a>
+              <a href="#">3</a>
+              <a href="#">4</a>
+              </div>
+              <a href="#" class="next">Next</a>
+            </div>
+          </div>
+        </div> -->
+
+      </div>
+    </section>
+    <!-- Include SweetAlert2 from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('removeApplicationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this);
+            const jobId = formData.get('JobId');
+            const userId = formData.get('UserId');
+
+            fetch(`/removeApplication?JobId=${encodeURIComponent(jobId)}&UserId=${encodeURIComponent(userId)}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Show success alert
+                return Swal.fire({
+                    title: 'Alert!',
+                    text: 'Successfully withdrawn!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            })
+            .then(result => {
+                // Refresh page only after the user clicks "OK"
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Alert!',
+                    text: 'Error in deletion!',
+                    icon: 'error', // Use 'error' instead of 'danger'
+                    confirmButtonText: 'OK'
+                });
+            });
+        });
+    </script>
+
+    <%- include('partials/signup-section') %>
+
+    
+    
+    <%- include('partials/footer') %>

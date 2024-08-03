@@ -1,6 +1,28 @@
 const JobListing = require("../models/JobListing");
+const Application = require("../models/Application");
 const mongoose = require("mongoose");
 const User = require("../models/User");
+
+
+async function getJobListingsForUser(userId) {
+    try {
+      // Ensure userId is a valid ObjectId
+      const objectId = new mongoose.Types.ObjectId(userId);
+  
+      // Find applications for the specific user and populate job listings
+      const applications = await Application.find({ userId: objectId })
+        .populate('jobId')
+        .exec();
+  
+      // Extract job listings from populated applications
+      const jobListings = applications.map(app => app.jobId);
+  
+      return jobListings;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
 
 module.exports = {
     // addJob: async function (req, res){
@@ -14,6 +36,9 @@ module.exports = {
     //         res.status(500).send({error: err.message});
     //     }
     // },
+
+    
+
     addJob: async function (req, res) {
         try {
           const { 
@@ -71,6 +96,27 @@ module.exports = {
         } catch (err){
             res.status(500).send({error: err.message});
         }
+    },
+    getMyJobs: async function (req, res){
+        if(req.cookies.user_object)
+        {
+            let user_object = JSON.parse(req.cookies.user_object);
+            try{
+                let userid = user_object.id;
+                let jobList = await getJobListingsForUser(userid);
+                let all_locations = await JobListing.distinct('location'); //getting all the locations
+                res.render('myapplications.ejs', {alljobs:jobList, all_locations: all_locations});
+                // res.status(200).send({alljobs:jobList});
+            } catch (err){
+                res.status(500).send({error: err.message});
+            }
+
+        }
+        else{
+            res.redirect("/")
+        }
+        console.log("--Accessing getMyJobs");
+        
     },
 
 
@@ -167,7 +213,9 @@ module.exports = {
 
             console.log(results);
 
-            res.status(201).send(results);
+            // res.status(201).send(results);
+            let all_locations = await JobListing.distinct('location');
+            res.render('jobs.ejs', {alljobs:results, all_locations: all_locations})
 
           } catch (err){
             res.status(500).send({error: err.message});
