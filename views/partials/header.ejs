@@ -55,7 +55,7 @@
               <li><a href="about" class="nav-link <%= activeClass == 'About'? 'active':''%>">About</a></li>
               <% if (user_object) { %> 
                 <li><a href="profile?username=<%=user_object.username%> " class="nav-link <%= activeClass == 'Profile'? 'active':''%>">Profile</a></li>
-                <li><a href="my-applications?userid=<%= user_object.id %> " class="nav-link <%= activeClass == 'MyApplication'? 'active':''%>">My Applications</a></li>
+                <li><a href="my-applications" class="nav-link <%= activeClass == 'MyApplication'? 'active':''%>">My Applications</a></li>
                 <% if (user_object.role =="admin") { %>
                   <li><a href="all-jobs-manage " class="nav-link <%= activeClass == 'Manage'? 'active':''%>">Manage Job Postings</a></li>
                   <% }   %>
