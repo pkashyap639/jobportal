@@ -8,10 +8,11 @@ module.exports = {
     getHomeContents: async function (req, res){
         console.log("--Accessing getAllJobs");
         try{
-            let jobList = await JobListing.find().limit(3); //getting latest 3 jobs for homepage //need fixing
+            let jobList = await JobListing.find().limit(3).sort({ listingDate: -1 }); //getting latest 3 jobs for homepage //need fixing
             let all_locations = await JobListing.distinct('location'); //getting all the locations
             let number_of_users = (await User.find()).length; //getting number of users
-            res.render('home.ejs', {alljobs:jobList, all_locations: all_locations, number_of_users: number_of_users})
+            let number_of_alljobs = (await JobListing.find()).length;
+            res.render('home.ejs', {alljobs:jobList, all_locations: all_locations, number_of_users: number_of_users, number_of_alljobs: number_of_alljobs})
             // res.status(200).send({alljobs:jobList});
         } catch (err){
             res.status(500).send({error: err.message});

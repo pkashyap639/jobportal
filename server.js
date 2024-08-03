@@ -122,6 +122,8 @@ app.post('/logout', (req, res) => {
   res.redirect("/");
 });
 
+app.get("/my-applications", jobPosting.getMyJobs);
+
 
 
 //apis for using in REST approach
@@ -140,6 +142,7 @@ app.get("/searchJob", jobPosting.getJobsByCriteria);
 
 
 app.delete("/deleteJob", jobPosting.removeJob);
+app.delete("/removeApplication", application.removeApplication);
 app.put("/updateJob", jobPosting.updateJob);
 
 //JobApplication

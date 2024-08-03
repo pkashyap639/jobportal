@@ -23,7 +23,7 @@ module.exports = {
                 return res.status(400).send({error: "Not valid input"});
             }
             await Application.create(application);
-            res.status(201).send(application);
+            res.redirect("/my-applications");
         } catch (err){
             res.status(500).send({error: err.message});
         }
@@ -95,6 +95,20 @@ module.exports = {
             );
             res.status(201).send(updated);
         }catch (err){
+            res.status(500).send({error: err.message});
+        }
+    },
+    removeApplication: async function(req, res){
+        try{
+            const jobId = req.query.JobId; // Use query parameters
+            const userId = req.query.UserId;
+            const removed = await Application.findOneAndDelete({userId: userId, jobId: jobId});
+            if(!removed){
+                return res.status(404).send({error: "Application not found"});
+            }
+            res.status(200).send(removed);
+
+        }catch(err){
             res.status(500).send({error: err.message});
         }
     }
