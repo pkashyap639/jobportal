@@ -16,7 +16,22 @@ module.exports = {
     // },
     addJob: async function (req, res) {
         try {
-          const { title, email, job_type, description, location, salary, company_name, company_website } = req.body;
+          const { 
+            title,
+            email,
+            job_type,
+            description,
+            location,
+            salary,
+            company_name,
+            company_website,
+            responsibilities,
+            education_experience,
+            benefits,
+            deadline,
+            vacancy,
+            years_experience
+          } = req.body;
           const company_logo = req.file ? req.file.path : '';
     
           const job = new JobListing({
@@ -28,7 +43,13 @@ module.exports = {
             salary,
             company_name,
             company_website,
-            company_logo
+            company_logo,
+            responsibilities,
+            education_experience,
+            benefits,
+            deadline,
+            vacancy,
+            years_experience
           });
     
           await job.save();

@@ -1,74 +1,76 @@
 <!-- title for page title and activeClass for activated navigation button.
 Possible activeClass values: Home, All-Jobs, About -->
 
-<%- include('partials/header', { title: 'Post A Job', activeClass: '', additionalLinks: '<link rel="stylesheet" href="css/quill.snow.css">' }) %>
+<%- include('partials/header', { title: 'Post A Job' , activeClass: '' ,
+  additionalLinks: '<link rel="stylesheet" href="css/quill.snow.css">' }) %>
 
-    <!-- HOME -->
-    <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-7">
-            <h1 class="text-white font-weight-bold">Post A Job</h1>
-            <div class="custom-breadcrumbs">
-              <a href="/">Home</a> <span class="mx-2 slash">/</span>
-              <a href="/all-jobs">Job</a> <span class="mx-2 slash">/</span>
-              <span class="text-white"><strong>Post a Job</strong></span>
-            </div>
+  <!-- HOME -->
+  <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');"
+    id="home-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          <h1 class="text-white font-weight-bold">Post A Job</h1>
+          <div class="custom-breadcrumbs">
+            <a href="/">Home</a> <span class="mx-2 slash">/</span>
+            <a href="/all-jobs">Job</a> <span class="mx-2 slash">/</span>
+            <span class="text-white"><strong>Post a Job</strong></span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    
-    <section class="site-section">
-      <div class="container">
 
-        <div class="row align-items-center mb-5">
-          <div class="col-lg-8 mb-4 mb-lg-0">
-            <div class="d-flex align-items-center">
-              <div>
-                <h2>Post A Job</h2>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="row">
-              <!-- <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Preview</a>
-              </div> -->
-              <!-- <div class="col-6">
-                <a href="#" class="btn btn-block btn-primary btn-md">Save Job</a>
-              </div> -->
+  <section class="site-section">
+    <div class="container">
+
+      <div class="row align-items-center mb-5">
+        <div class="col-lg-8 mb-4 mb-lg-0">
+          <div class="d-flex align-items-center">
+            <div>
+              <h2>Post A Job</h2>
             </div>
           </div>
         </div>
-        <div class="row mb-5">
-          <div class="col-lg-12">
-            <form class="p-4 p-md-5 border rounded" action="/postjob" method="POST" enctype="multipart/form-data">
-              <h3 class="text-black mb-5 border-bottom pb-2">Job Details</h3>
-              
-              <!-- <div class="form-group">
+        <div class="col-lg-4">
+          <div class="row">
+            <!-- <div class="col-6">
+                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Preview</a>
+              </div> -->
+            <!-- <div class="col-6">
+                <a href="#" class="btn btn-block btn-primary btn-md">Save Job</a>
+              </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="row mb-5">
+        <div class="col-lg-12">
+          <form class="p-4 p-md-5 border rounded" action="/postjob" method="POST" enctype="multipart/form-data">
+            <h3 class="text-black mb-5 border-bottom pb-2">Job Details</h3>
+
+            <!-- <div class="form-group">
                 <label for="company-website-tw d-block">Upload Featured Image</label> <br>
                 <label class="btn btn-primary btn-md btn-file">
                   Browse File<input type="file" hidden>
                 </label>
               </div> -->
-              <div class="form-group">
-                <label for="job-title">Job Title</label>
-                <input type="text" class="form-control" name="title" id="job-title" placeholder="e.g. Web Developer">
-              </div>
+            <div class="form-group">
+              <label for="job-title">Job Title</label>
+              <input type="text" class="form-control" name="title" id="job-title" placeholder="e.g. Web Developer">
+            </div>
 
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" class="form-control" name="email" id="email" placeholder="you@yourdomain.com">
-              </div>
-              
-              <div class="form-group">
-                <label for="job-location">Location</label>
-                <input type="text" class="form-control" name="location" id="job-location" placeholder="e.g. New York">
-              </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" class="form-control" name="email" id="email" placeholder="you@yourdomain.com">
+            </div>
 
-              <!-- <div class="form-group">
+            <div class="form-group">
+              <label for="job-location">Location</label>
+              <input type="text" class="form-control" name="location" id="job-location" placeholder="e.g. New York">
+            </div>
+
+            <!-- <div class="form-group">
                 <label for="job-region">Job Region</label>
                 <select class="selectpicker border rounded" id="job-region" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Region">
                       <option>Anywhere</option>
@@ -83,42 +85,79 @@ Possible activeClass values: Home, All-Jobs, About -->
                     </select>
               </div> -->
 
-              <div class="form-group">
-                <label for="job-type">Job Type</label>
-                <select class="selectpicker border rounded" name="job_type" id="job-type" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Job Type">
-                  <option>Part Time</option>
-                  <option>Full Time</option>
-                </select>
-              </div>
+            <div class="form-group">
+              <label for="job-type">Job Type</label>
+              <select class="selectpicker border rounded" name="job_type" id="job-type" data-style="btn-black"
+                data-width="100%" data-live-search="true" title="Select Job Type">
+                <option>Part Time</option>
+                <option>Full Time</option>
+              </select>
+            </div>
 
 
-              <div class="form-group">
-                <label for="job-description">Job Description</label>
-                <textarea name="description" id="" class="form-control" rows="6"></textarea>
-                
-                <!-- text editor. good to have if can get form data from here -->
-                <!-- <div class="editor" id="editor-1">
+            <div class="form-group">
+              <label for="job-description">Job Description</label>
+              <textarea name="description" id="" class="form-control" rows="6"></textarea>
+
+              <!-- text editor. good to have if can get form data from here -->
+              <!-- <div class="editor" id="editor-1">
                   <p>Write Job Description!</p>
                 </div> -->
-              </div>
-              <div class="form-group">
-                <label for="job-salary">Salary</label>
-                <input type="number" class="form-control" name="salary" id="job-salary">
-              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="responsibilities">Responsibilities</label>
+              <textarea name="responsibilities" id="responsibilities" class="form-control" rows="6"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="education_experience">Education + Experience</label>
+              <textarea name="education_experience" id="education_experience" class="form-control" rows="6"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="years_experience">Years of Experience</label>
+              <select class="selectpicker border rounded" name="years_experience" id="years_experience"
+                data-style="btn-black" data-width="100%" data-live-search="true" title="Select Years of Experience">
+                <option>No experience</option>
+                <option>0 to 1 year</option>
+                <option>1 to 2 years</option>
+                <option>2 to 3 years</option>
+                <option>3 to 4 years</option>
+                <option>4 to 5 years</option>
+                <option>More than 5 years</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="benefits">Other Benefits</label>
+              <textarea name="benefits" id="benefits" class="form-control" rows="6"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="vacancy">Vacancy</label>
+              <input type="number" class="form-control" name="vacancy" id="vacancy">
+            </div>
+
+            <div class="form-group">
+              <label for="job-salary">Salary</label>
+              <input type="number" class="form-control" name="salary" id="job-salary">
+            </div>
 
 
-              <h3 class="text-black my-5 border-bottom pb-2">Company Details</h3>
+            <h3 class="text-black my-5 border-bottom pb-2">Company Details</h3>
 
-              <div class="form-group">
-                <label for="company-website-tw d-block">Upload Logo</label> <br>
-                <label class="btn btn-primary btn-md btn-file">
-                  Browse File<input type="file" name="company_logo" hidden>
-                </label>
-              </div>
-              <div class="form-group">
+            <div class="form-group">
+              <label for="company-website-tw d-block">Upload Logo</label> <br>
+              <label class="btn btn-primary btn-md btn-file">
+                Browse File<input type="file" name="company_logo" hidden>
+              </label>
+            </div>
+            <div class="form-group">
               <div class="form-group">
                 <label for="company-name">Company Name</label>
-                <input type="text" class="form-control" name="company_name" id="company-name" placeholder="e.g. Microsoft">
+                <input type="text" class="form-control" name="company_name" id="company-name"
+                  placeholder="e.g. Microsoft">
               </div>
 
               <!-- <div class="form-group">
@@ -132,10 +171,11 @@ Possible activeClass values: Home, All-Jobs, About -->
                   <p>Description</p>
                 </div>
               </div> -->
-              
+
               <div class="form-group">
                 <label for="company-website">Website (Optional)</label>
-                <input type="text" class="form-control" name="company_website" id="company-website" placeholder="https://">
+                <input type="text" class="form-control" name="company_website" id="company-website"
+                  placeholder="https://">
               </div>
 
               <!-- <div class="form-group">
@@ -152,21 +192,21 @@ Possible activeClass values: Home, All-Jobs, About -->
                 <input type="text" class="form-control" id="company-website-tw" placeholder="companyname">
               </div> -->
 
-             
-          
-                
-                <input type="submit" value="Save Job" href="#" class="btn btn-primary w-100"/>
-                    
-              </div>
 
-            </form>
-          </div>
 
-         
+
+              <input type="submit" value="Save Job" href="#" class="btn btn-primary w-100" />
+
+            </div>
+
+          </form>
         </div>
-        
-      </div>
-    </section>
 
-    
-    <%- include('partials/footer', { additionalLinks: '<script src="js/quill.min.js"></script>' }) %>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <%- include('partials/footer', { additionalLinks: '<script src="js/quill.min.js"></script>' }) %>
