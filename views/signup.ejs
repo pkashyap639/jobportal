@@ -1,0 +1,231 @@
+<!-- title for page title and activeClass for activated navigation button.
+Possible activeClass values: Home, All-Jobs, About -->
+
+<%- include('partials/header', { title: 'Signup', activeClass: '' }) %>
+
+<!-- HOME -->
+<section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <h1 class="text-white font-weight-bold">Signup</h1>
+        <div class="custom-breadcrumbs">
+          <a href="/">Home</a> <span class="mx-2 slash">/</span>
+          <span class="text-white"><strong>Sign Up</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="site-section">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h2 class="mb-4">Create Your Account</h2>
+        <form id="signupForm" class="p-4 border rounded">
+          <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+
+          <div class="row form-group">
+            <div class="col-md-12 mb-3 mb-md-0">
+              <label class="text-black" for="username">Username</label>
+              <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-12 mb-3 mb-md-0">
+              <label class="text-black" for="email">Email</label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required>
+            </div>
+          </div>
+          <div class="row form-group mb-4">
+            <div class="col-md-12 mb-3 mb-md-0">
+              <label class="text-black" for="password">Password</label>
+              <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+            </div>
+          </div>
+          <div class="row form-group mb-4" hidden>
+            <div class="col-md-12 mb-3 mb-md-0">
+              <label class="text-black" for="role">Role</label>
+              <select id="role" name="role" class="form-control" required>
+                <option value="job_seeker">Job Seeker</option>
+                <option value="employer">Employer</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="resume-section">
+            <h3>Resume</h3>
+
+            <div class="form-group">
+              <label class="text-black">Skills</label>
+              <div id="skills-container">
+                <input type="text" name="resume[skills][]" class="form-control" placeholder="Skill">
+              </div>
+              <button type="button" id="add-skill" class="btn btn-secondary mt-2">Add More Skills</button>
+            </div>
+
+            <div id="experience-section">
+              <h4>Experience</h4>
+              <div class="experience-group">
+                <div class="form-group">
+                  <label class="text-black">Company</label>
+                  <input type="text" name="resume[experience][0][company]" class="form-control" placeholder="Company">
+                </div>
+                <div class="form-group">
+                  <label class="text-black">Position</label>
+                  <input type="text" name="resume[experience][0][position]" class="form-control" placeholder="Position">
+                </div>
+                <div class="form-group">
+                  <label class="text-black">Duration</label>
+                  <input type="text" name="resume[experience][0][duration]" class="form-control" placeholder="Duration">
+                </div>
+                <button type="button" class="btn btn-secondary  mb-3 add-experience">Add More Experience</button>
+              </div>
+            </div>
+
+            <div id="education-section">
+              <h4>Education</h4>
+              <div class="education-group">
+                <div class="form-group">
+                  <label class="text-black">Institution</label>
+                  <input type="text" name="resume[education][0][institution]" class="form-control" placeholder="Institution">
+                </div>
+                <div class="form-group">
+                  <label class="text-black">Degree</label>
+                  <input type="text" name="resume[education][0][degree]" class="form-control" placeholder="Degree">
+                </div>
+                <div class="form-group">
+                  <label class="text-black">Graduation Year</label>
+                  <input type="number" name="resume[education][0][year]" class="form-control" placeholder="Year">
+                </div>
+                <button type="button" class="btn btn-secondary  mb-3 add-education">Add More Education</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-md-12">
+              <input type="submit" value="Sign Up" class="btn px-4 btn-primary text-white">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<%- include('partials/signup-section') %>
+<%- include('partials/footer') %>
+
+<script>
+  document.getElementById('signupForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+    const data = {};
+
+    formData.forEach((value, key) => {
+      // Handle array values for skills
+      if (key.startsWith('resume[skills]')) {
+        if (!data.resume) data.resume = {};
+        if (!data.resume.skills) data.resume.skills = [];
+        data.resume.skills.push(value);
+      }
+      // Handle nested fields for experience and education
+      else if (key.startsWith('resume[experience') || key.startsWith('resume[education')) {
+        const matches = key.match(/resume\[(experience|education)]\[(\d+)]\[(.+)]/);
+        if (matches) {
+          const [_, field, index, subfield] = matches;
+          if (!data.resume) data.resume = {};
+          if (!data.resume[field]) data.resume[field] = [];
+          if (!data.resume[field][index]) data.resume[field][index] = {};
+          data.resume[field][index][subfield] = value;
+        }
+      } else {
+        data[key] = value;
+      }
+    });
+
+    try {
+      const response = await fetch('/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // Redirect or show success message
+        window.location.href = '/login'; // Modify this as needed
+      } else {
+        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('error-message').innerText = result.error;
+      }
+    } catch (error) {
+      document.getElementById('error-message').style.display = 'block';
+      document.getElementById('error-message').innerText = 'An error occurred. Please try again.';
+    }
+  });
+
+  // Add new skill input
+  document.getElementById('add-skill').addEventListener('click', function() {
+    const skillsContainer = document.getElementById('skills-container');
+    const skillInput = document.createElement('input');
+    skillInput.type = 'text';
+    skillInput.name = 'resume[skills][]';
+    skillInput.className = 'form-control mt-2';
+    skillInput.placeholder = 'Skill';
+    skillsContainer.appendChild(skillInput);
+  });
+
+  // Add new experience input fields
+  document.getElementById('experience-section').addEventListener('click', function(event) {
+    if (event.target.classList.contains('add-experience')) {
+      const index = document.querySelectorAll('#experience-section .experience-group').length;
+      const newExperience = document.createElement('div');
+      newExperience.classList.add('experience-group');
+      newExperience.innerHTML = `
+        <div class="form-group">
+          <label class="text-black">Company</label>
+          <input type="text" name="resume[experience][${index}][company]" class="form-control" placeholder="Company">
+        </div>
+        <div class="form-group">
+          <label class="text-black">Position</label>
+          <input type="text" name="resume[experience][${index}][position]" class="form-control" placeholder="Position">
+        </div>
+        <div class="form-group">
+          <label class="text-black">Duration</label>
+          <input type="text" name="resume[experience][${index}][duration]" class="form-control" placeholder="Duration">
+        </div>
+      `;
+      event.target.parentElement.insertAdjacentElement('beforebegin', newExperience);
+    }
+  });
+
+  // Add new education input fields
+  document.getElementById('education-section').addEventListener('click', function(event) {
+    if (event.target.classList.contains('add-education')) {
+      const index = document.querySelectorAll('#education-section .education-group').length;
+      const newEducation = document.createElement('div');
+      newEducation.classList.add('education-group');
+      newEducation.innerHTML = `
+        <div class="form-group">
+          <label class="text-black">Institution</label>
+          <input type="text" name="resume[education][${index}][institution]" class="form-control" placeholder="Institution">
+        </div>
+        <div class="form-group">
+          <label class="text-black">Degree</label>
+          <input type="text" name="resume[education][${index}][degree]" class="form-control" placeholder="Degree">
+        </div>
+        <div class="form-group">
+          <label class="text-black">Year</label>
+          <input type="number" name="resume[education][${index}][year]" class="form-control" placeholder="Year">
+        </div>
+      `;
+      event.target.parentElement.insertAdjacentElement('beforebegin', newEducation);
+    }
+  });
+</script>

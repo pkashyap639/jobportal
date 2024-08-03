@@ -1,0 +1,90 @@
+<!-- title for page title and activeClass for activated navigation button.
+Possible activeClass values: Home, All-Jobs, About -->
+
+<%- include('partials/header', { title: 'Profile', activeClass: 'Profile' }) %>
+
+
+    <!-- HOME -->
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <h1 class="text-white font-weight-bold">Profile </h1>
+            <div class="custom-breadcrumbs">
+              <a href="/">Home</a> <span class="mx-2 slash">/</span>
+              <span class="text-white"><strong>Profile</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="site-section">
+      <div class="container">
+        <div class="row align-items-center mb-5">
+          <div class="col-lg-8 mb-4 mb-lg-0">
+            <div class="d-flex align-items-center">
+              
+              <div>
+                <h2><%= user.username %></h2>
+                <div>
+                  <p><strong>Email: </strong><%= user.email %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+        <div class="row">
+          <div class="col-lg-8">
+            
+            <div class="mb-5">
+              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Skills</h3>
+              <ul class="list-unstyled m-0 p-0">
+                <% for(var i =0;i<user.resume.skills.length; i++) { %>
+                    <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span><%= user.resume.skills[i] %></span></li>
+                <% } %>    
+              </ul>
+            </div>
+
+            <div class="mb-5">
+              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-book mr-3"></span>Education</h3>
+              <% for(var i =0;i<user.resume.education.length; i++) { %>
+                <div class="card">
+                    <div class="card-body">
+                        <p><strong>Institute: </strong> <%=user.resume.education[i].institution %> </p>
+                        <p><strong>Degree: </strong> <%=user.resume.education[i].degree %> </p>
+                        <p><strong>Graduation Year: </strong> <%=user.resume.education[i].year %> </p>
+                    </div>
+                </div>
+            <% } %>  
+            </div>
+
+            <div class="mb-5">
+                <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-book mr-3"></span>Experience</h3>
+                <% for(var i =0;i<user.resume.experience.length; i++) { %>
+                  <div class="card">
+                      <div class="card-body">
+                          <p><strong>Company: </strong> <%=user.resume.experience[i].company %> </p>
+                          <p><strong>Position: </strong> <%=user.resume.experience[i].position %> </p>
+                          <p><strong>Duration: </strong> <%=user.resume.experience[i].duration %> </p>
+                      </div>
+                  </div>
+              <% } %>  
+              </div>
+
+           
+
+          </div>
+         
+        </div>
+      </div>
+    </section>
+
+    
+    
+
+    
+    
+    <%- include('partials/footer') %>

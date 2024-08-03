@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const multer = require('multer'); //multer for using in file uploading
+const cookieParser = require('cookie-parser');
+
 
 const job = require("./controller/Job");
 const jobPosting = require("./controller/JobPosting");
@@ -16,6 +18,21 @@ const PageController = require("./controller/PageController");
 const uri = "mongodb+srv://lambton:3AXw2JI4C2qklMtW@jobapp.nzkszzx.mongodb.net/job_app";
 
 var app = express();
+
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+  if (req.cookies.user_object) {
+    try {
+      res.locals.user_object = JSON.parse(req.cookies.user_object);
+    } catch (err) {
+      res.locals.user_object = null;
+    }
+  } else {
+    res.locals.user_object = null;
+  }
+  next();
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -95,13 +112,28 @@ mongoose
 app.get("/", PageController.getHomeContents);
 app.get("/about", PageController.about);
 app.get("/post-job", PageController.postNewJob);
-
+app.get("/login", PageController.loginPage);
+app.get("/signup", PageController.signupPage);
+app.get("/profile", PageController.profile);
 app.get("/all-jobs", jobPosting.getAllJobs);
 app.get("/jobById", jobPosting.getJobById);
+app.post('/logout', (req, res) => {
+  res.clearCookie('user_object', { httpOnly: true });
+  res.redirect("/");
+});
 
-app.post("/signup", job.signup);
+
+
+//apis for using in REST approach
 app.post("/signin", job.signin);
+app.post("/signup", job.signup);
+
+
+//routes for direct connection to controller
 app.post("/postjob", upload.single('company_logo'), jobPosting.addJob);
+
+
+
 //JobList
 // app.get("/joblist", jobPosting.getAllJobs);
 app.get("/searchJob", jobPosting.getJobsByCriteria);

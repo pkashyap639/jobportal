@@ -8,7 +8,7 @@ module.exports = {
     getHomeContents: async function (req, res){
         console.log("--Accessing getAllJobs");
         try{
-            let jobList = await JobListing.find().limit(3); //getting latest 3 jobs for homepage
+            let jobList = await JobListing.find().limit(3); //getting latest 3 jobs for homepage //need fixing
             let all_locations = await JobListing.distinct('location'); //getting all the locations
             let number_of_users = (await User.find()).length; //getting number of users
             res.render('home.ejs', {alljobs:jobList, all_locations: all_locations, number_of_users: number_of_users})
@@ -35,6 +35,28 @@ module.exports = {
     },
     postNewJob: function(req, res){
         res.render("job-form.ejs");
+    },
+    loginPage: function(req, res){
+        res.render("login.ejs");
+    },
+    signupPage: function(req, res){
+        res.render("signup.ejs");
+    },
+    profile: function(req, res){
+        res.render("profile.ejs");
+    },
+    profile: async function (req, res){
+        try{
+            const {username} = req.query; //via GET method (access the URL id param) e.g: http://localhost:3000/jobById?id=66a5c5da6225911fca58fc9e
+            let user = await User.findOne({username: username});
+            if (!user) {
+                return res.status(404).send({ error: "User Not Found" });
+            }
+            res.render('profile.ejs', {user:user})
+            // res.status(200).send(job);
+        } catch (err){
+            res.status(500).send({error: err.message});
+        }
     },
 
     
